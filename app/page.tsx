@@ -14,6 +14,8 @@ export default function HomePage() {
         <main>
           <HeroSection />
           <FeaturedProducts />
+          {/* 🚨 Fatal error: undefined is not a function */}
+          {undefined()}
         </main>
         <Footer />
       </div>
