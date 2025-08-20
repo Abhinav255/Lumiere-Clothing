@@ -7,6 +7,8 @@ import { Footer } from "@/components/footer"
 import { PageTransition } from "@/components/page-transition"
 
 export default function HomePage() {
+  const x;
+  
   return (
     <PageTransition>
       <div className="min-h-screen">
