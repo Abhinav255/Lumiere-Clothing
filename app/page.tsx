@@ -6,6 +6,7 @@ import { FeaturedProducts } from "@/components/featured-products"
 import { Footer } from "@/components/footer"
 import { PageTransition } from "@/components/page-transition"
 
+// 🚨 Syntax error: missing closing brace
 export default function HomePage() {
   return (
     <PageTransition>
@@ -14,11 +15,9 @@ export default function HomePage() {
         <main>
           <HeroSection />
           <FeaturedProducts />
-          {/* 🚨 Fatal error: undefined is not a function */}
-          {undefined()}
         </main>
         <Footer />
       </div>
     </PageTransition>
   )
-}
+// <- intentionally left out the closing brace "}"
