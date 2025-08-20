@@ -9,13 +9,14 @@ import { PageTransition } from "@/components/page-transition"
 export default function HomePage() {
   const x;
   console.log(x);
+  askdnnakjsbakjsbskjbskjbKSBJSKD V SK VKB 
   return (
     <PageTransition>
       <div className="min-h-screen">
         <Navigation />
         <main>
-          <HeroSection />
-          <FeaturedProducts />
+          <HeroSectionasdasd />
+          <FeaturedProasdasducts />
         </main>
         <Footer />
       </div>
