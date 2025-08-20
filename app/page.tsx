@@ -8,8 +8,8 @@ import { PageTransition } from "@/components/page-transition"
 
 export default function HomePage() {
   const x;
-  console.log(x);
-  askdnnakjsbakjsbskjbskjbKSBJSKD V SK VKB 
+  console.log(y);
+
   return (
     <PageTransition>
       <div className="min-h-screen">
