@@ -12,6 +12,52 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { products } from "@/lib/products"
 import { Search, X } from "lucide-react"
 
+// ------------------ Helper functions ------------------
+
+function filterBySearch(products: typeof products, query: string) {
+  if (!query) return products
+  return products.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query.toLowerCase()) ||
+      p.description.toLowerCase().includes(query.toLowerCase()) ||
+      p.category.toLowerCase().includes(query.toLowerCase())
+  )
+}
+
+function filterByCategory(products: typeof products, category: string) {
+  if (category === "all") return products
+  return products.filter((p) => p.category === category)
+}
+
+function filterByPrice(products: typeof products, range: string) {
+  switch (range) {
+    case "under-80":
+      return products.filter((p) => p.price < 80)
+    case "80-90":
+      return products.filter((p) => p.price >= 80 && p.price < 90)
+    case "90-plus":
+      return products.filter((p) => p.price >= 90)
+    default:
+      return products
+  }
+}
+
+function sortProducts(products: typeof products, sortBy: string) {
+  switch (sortBy) {
+    case "price-low":
+      return [...products].sort((a, b) => a.price - b.price)
+    case "price-high":
+      return [...products].sort((a, b) => b.price - a.price)
+    case "name":
+      return [...products].sort((a, b) => a.name.localeCompare(b.name))
+    case "featured":
+    default:
+      return [...products].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+  }
+}
+
+// ------------------ Component ------------------
+
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -21,51 +67,11 @@ export default function ShopPage() {
   const categories = ["all", ...Array.from(new Set(products.map((p) => p.category)))]
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products
-
-    // Filter by search query
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.category.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
-    }
-
-    // Filter by category
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter((product) => product.category === selectedCategory)
-    }
-
-    // Filter by price range
-    if (priceRange !== "all") {
-      switch (priceRange) {
-        case "under-80":
-          filtered = filtered.filter((product) => product.price < 80)
-          break
-        case "80-90":
-          filtered = filtered.filter((product) => product.price >= 80 && product.price < 90)
-          break
-        case "90-plus":
-          filtered = filtered.filter((product) => product.price >= 90)
-          break
-      }
-    }
-
-    // Sort products
-    switch (sortBy) {
-      case "price-low":
-        return filtered.sort((a, b) => a.price - b.price)
-      case "price-high":
-        return filtered.sort((a, b) => b.price - a.price)
-      case "name":
-        return filtered.sort((a, b) => a.name.localeCompare(b.name))
-      case "featured":
-      default:
-        return filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
-    }
-  }, [searchQuery, selectedCategory, sortBy, priceRange])
+    let result = filterBySearch(products, searchQuery)
+    result = filterByCategory(result, selectedCategory)
+    result = filterByPrice(result, priceRange)
+    return sortProducts(result, sortBy)
+  }, [searchQuery, selectedCategory, priceRange, sortBy])
 
   const clearFilters = () => {
     setSearchQuery("")
